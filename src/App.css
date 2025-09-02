@@ -1,38 +1,51 @@
-.App {
-  text-align: center;
-}
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Container for the entire app */
+.app-container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  min-height: 100vh; /* full viewport height */
+}
+
+/* Navbar + main content + footer layout */
+.main-layout {
+  display: flex;
+  flex: 1; /* grow to fill space between navbar and footer */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 205px; /* fixed width */
+  flex-shrink: 0;
+  background-color: #1e2a38;
   color: white;
+  padding: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+/* Main content area */
+.content {
+  flex: 1;
+  padding: 20px;
+  background-color: #f5f6fa;
+  overflow-y: auto;
+  margin-left: 220px; /* prevents overlap with sidebar */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+/* Footer */
+.footer {
+  background-color: #f1f1f1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 35px;
+  font-size: 14px;
+  color: #007bff;
+  position: fixed;
+  bottom: 0;
+  left: 245px;   /* start after sidebar */
+  width: calc(100% - 220px); /* span remaining width */
+  z-index: 1000;
+  padding: 0 10px;
 }
+
+
+

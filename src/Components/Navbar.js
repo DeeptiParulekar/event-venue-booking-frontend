@@ -1,41 +1,21 @@
-
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
+import "./Navbar.css"; // Import the css file
 
 export default function Navbar() {
   return (
-    <nav style={{
-      padding: "10px 20px",
-      background: "#4c5e79",
-      color: "white",
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "space-between",
-      boxShadow: "0 2px 6px rgba(0,0,0,0.2)"
-    }}>
-      <div style={{ display: "flex", alignItems: "center" }}>
+    <nav className="navbar">
+      <div className="navbar-left">
         <img
           src={logo}
           alt="Event & Venue Booking Logo"
-          style={{ height: 50, width: "auto", marginRight: 16, objectFit: "contain" }}
+          className="navbar-logo"
         />
-        <span style={{ fontSize: 22, fontWeight: "bold" }}>Event & Venue Booking</span>
+        <span className="navbar-title">Event & Venue Booking</span>
       </div>
 
-      {/* Login button */}
-      <Link 
-        to="/login"
-        style={{
-          padding: "6px 14px",
-          backgroundColor: "#ffb400",
-          color: "#000",
-          textDecoration: "none",
-          fontWeight: "bold",
-          borderRadius: 4,
-          fontSize: 16
-        }}
-      >
+      <Link to="/login" className="navbar-login">
         Login
       </Link>
     </nav>

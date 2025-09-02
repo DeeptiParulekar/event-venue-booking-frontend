@@ -1,28 +1,33 @@
+// import React from "react";
+// import { Link } from "react-router-dom";
+// import "./Sidebar.css";   // import CSS file
+
+// export default function Sidebar() {
+//   return (
+//     <div className="sidebar">
+//       <Link to="/">Dashboard</Link>
+//       <Link to="/venues">Venues</Link>
+//     </div>
+//   );
+// }
+
+
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaTachometerAlt, FaBuilding } from "react-icons/fa"; // icons
+import "./Sidebar.css";
 
 export default function Sidebar() {
   return (
-    <div style={{
-      width: 200,
-      height: "100vh",
-      backgroundColor: "#2c3e50",
-      color: "white",
-      display: "flex",
-      flexDirection: "column",
-      paddingTop: 20
-    }}>
-      <Link 
-        to="/" 
-        style={{ color: "white", textDecoration: "none", padding: "10px 20px", fontSize: 18 }}
-      >
-        Dashboard
+    <div className="sidebar">
+      <Link to="/" className="sidebar-link">
+        <FaTachometerAlt className="sidebar-icon" />
+        <span>Dashboard</span>
       </Link>
-      <Link 
-        to="/venues" 
-        style={{ color: "white", textDecoration: "none", padding: "10px 20px", fontSize: 18 }}
-      >
-        Venues
+
+      <Link to="/venues" className="sidebar-link">
+        <FaBuilding className="sidebar-icon" />
+        <span>Venues</span>
       </Link>
     </div>
   );
