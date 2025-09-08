@@ -33,7 +33,7 @@ import Navbar from "./Components/Navbar";
 import Sidebar from "./Components/Sidebar";
 import Dashboard from "./Components/Dashboard";
 import VenueList from "./Components/VenueList";
-import Login from "./Components/Login";
+import LoginPage from "./Components/LoginPage";
 import "./App.css"; // <-- include styles
 
 function App() {
@@ -47,7 +47,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/venues" element={<VenueList />} />
-              <Route path="/login" element={<Login />} />
+              <Route path="/login" element={<LoginPage />} />
             </Routes>
           </div>
         </div>

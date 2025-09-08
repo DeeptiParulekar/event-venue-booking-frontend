@@ -13,7 +13,10 @@ const Dashboard = () => {
   }, []);
 
   if (!metrics) {
-    return <div className="loading">Loading dashboard...</div>;
+    return <div className="loading">
+      <div className="spinner"></div>
+     <p>Loading Dashboard....</p>
+      </div>;
   }
 
   return (
@@ -23,25 +26,27 @@ const Dashboard = () => {
       {/* Metrics cards */}
       <div className="cards">
         <div className="card">
-          <h3>Total Bookings</h3>
+          <h3>📅 Total Bookings</h3>
           <p>{metrics.totalBookings}</p>
         </div>
         <div className="card">
-          <h3>Total Venues</h3>
+          <h3>📍 Total Venues</h3>
           <p>{metrics.totalVenues}</p>
         </div>
         <div className="card">
-          <h3>Total Customers</h3>
+          <h3>👥 Total Customers</h3>
           <p>{metrics.totalCustomers}</p>
         </div>
         <div className="card">
-          <h3>Revenue</h3>
+          <h3>
+
+💰  Revenue</h3>
           <p>₹{metrics.revenue}</p>
         </div>
       </div>
 
       {/* Recent Bookings Table */}
-      <h2 className="section-title">Recent Bookings</h2>
+      <h2 className="section-title">📅 Recent Bookings</h2>
       <div className="table-container">
         <table className="modern-table">
           <thead>
