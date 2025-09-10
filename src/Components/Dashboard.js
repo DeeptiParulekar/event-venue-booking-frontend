@@ -1,29 +1,51 @@
-// src/components/Dashboard.js
 import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 
 const Dashboard = () => {
   const [metrics, setMetrics] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/dashboard/metrics")
-      .then((res) => res.json())
+    const token = localStorage.getItem("token");
+
+    fetch("http://localhost:8080/api/dashboard/metrics", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Failed to fetch dashboard metrics");
+        }
+        return res.json();
+      })
       .then((data) => setMetrics(data))
-      .catch((err) => console.error("Error fetching metrics:", err));
+      .catch((err) => {
+        console.error("Error fetching metrics:", err);
+        setError("Unable to load dashboard data. Please try again.");
+      });
   }, []);
 
+  if (error) {
+    return <div className="error-message">{error}</div>;
+  }
+
   if (!metrics) {
-    return <div className="loading">
-      <div className="spinner"></div>
-     <p>Loading Dashboard....</p>
-      </div>;
+    return (
+      <div className="loading">
+        <div className="spinner"></div>
+        <p>Loading Dashboard....</p>
+      </div>
+    );
   }
 
   return (
     <div className="dashboard">
       <h1 className="dashboard-title">📊 Dashboard</h1>
 
-      {/* Metrics cards */}
+      {/* Metrics Cards */}
       <div className="cards">
         <div className="card">
           <h3>📅 Total Bookings</h3>
@@ -38,9 +60,7 @@ const Dashboard = () => {
           <p>{metrics.totalCustomers}</p>
         </div>
         <div className="card">
-          <h3>
-
-💰  Revenue</h3>
+          <h3>💰 Revenue</h3>
           <p>₹{metrics.revenue}</p>
         </div>
       </div>
@@ -67,11 +87,7 @@ const Dashboard = () => {
                   <td>{booking.customer}</td>
                   <td>{booking.date}</td>
                   <td>
-                    <span
-                      className={`status-badge ${
-                        booking.status.toLowerCase()
-                      }`}
-                    >
+                    <span className={`status-badge ${booking.status.toLowerCase()}`}>
                       {booking.status}
                     </span>
                   </td>
@@ -90,5 +106,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-

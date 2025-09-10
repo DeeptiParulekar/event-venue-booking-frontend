@@ -3,18 +3,19 @@
 .app-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; /* full viewport height */
+  min-height: 100vh; 
 }
 
 /* Navbar + main content + footer layout */
 .main-layout {
-  display: flex;
-  flex: 1; /* grow to fill space between navbar and footer */
+ display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 /* Sidebar */
 .sidebar {
-  width: 205px; /* fixed width */
+  width: 205px; 
   flex-shrink: 0;
   background-color: #1e2a38;
   color: white;
@@ -27,25 +28,35 @@
   padding: 20px;
   background-color: #f5f6fa;
   overflow-y: auto;
-  margin-left: 220px; /* prevents overlap with sidebar */
+  margin-left: 220px; 
 }
 
-/* Footer */
+
+/* For main pages */
 .footer {
-  background-color: #f1f1f1;
+  background-color: #cac7c7;
+  color: #007bff;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 35px;
   font-size: 14px;
-  color: #007bff;
   position: fixed;
   bottom: 0;
-  left: 245px;   /* start after sidebar */
-  width: calc(100% - 220px); /* span remaining width */
+  left: 245px; 
+  width: calc(100% - 245px);
   z-index: 1000;
   padding: 0 10px;
 }
+
+/* For login page */
+.login-page-container .footer {
+  position: static; 
+  width: 100%;
+  left: 0;
+  margin-top: 20px;
+}
+
 
 
 

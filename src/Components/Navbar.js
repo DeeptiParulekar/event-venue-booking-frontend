@@ -1,9 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.png";
-import "./Navbar.css"; // Import the css file
+import "./Navbar.css";
 
-export default function Navbar() {
+export default function Navbar({ hideLoginButton, token, onLogout }) {
   return (
     <nav className="navbar">
       <div className="navbar-left">
@@ -15,9 +15,21 @@ export default function Navbar() {
         <span className="navbar-title">Event & Venue Booking</span>
       </div>
 
-      <Link to="/login" className="navbar-login">
-        Login
-      </Link>
+      <div className="navbar-right">
+        {/* Show login link only if not logged in */}
+        {!token && !hideLoginButton && (
+          <Link to="/login" className="navbar-login">
+            Login
+          </Link>
+        )}
+
+        {/* Show logout button only if logged in */}
+        {token && (
+          <button className="navbar-logout" onClick={onLogout}>
+            Logout
+          </button>
+        )}
+      </div>
     </nav>
   );
 }
