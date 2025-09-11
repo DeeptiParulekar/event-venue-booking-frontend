@@ -1,14 +1,13 @@
 .login-wrapper {
   display: flex;
   height: 100vh;
-  overflow: hidden;
   font-family: 'Arial', sans-serif;
 }
 
 .login-banner {
   flex: 1;
-  background: url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?fit=crop&w=1350&q=80') no-repeat center center;
-  /* background: url('https://images.unsplash.com/photo-1551836022-d5d88e9218df?fit=crop&w=1350&q=80') no-repeat center center; */
+  /* background: url('https://images.unsplash.com/photo-1556740749-887f6717d7e4?fit=crop&w=1350&q=80') no-repeat center center; */
+  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?fit=crop&w=1350&q=80') no-repeat center center;
   background-size: cover;
   color: white;
   display: flex;
@@ -50,7 +49,7 @@
 
 .login-form-container input {
   margin-bottom: 15px;
-  padding: 12px;
+  padding: 20px;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -74,4 +73,42 @@
 .error {
   color: red;
   margin-top: 10px;
+}
+
+.forgot-password-link,
+.back-to-login {
+  margin-top: 10px;
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.login-form-container {
+  max-width: 500px;
+  /* margin: auto; */
+  padding: 20px;
+}
+
+
+.link {
+  margin-top: 10px;
+  color: blue;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+
+.login-form-container {
+  max-width: 400px;
+  /* margin: auto; */
+  padding: 20px;
 }
