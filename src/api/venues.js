@@ -1,7 +1,6 @@
-// src/api/venue.js
 import axios from "axios";
 
-const API_URL = "http://localhost:8080/api/venues"; // backend base URL
+const API_URL = "http://localhost:8080/api/venues";
 
 export const getAllVenues = () => {
   return axios.get(`${API_URL}/getAll`);

@@ -1,0 +1,150 @@
+.venue-container {
+  padding: 30px 40px;
+  font-family: "Segoe UI", sans-serif;
+  color: #2c3e50;
+}
+
+.venue-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.venue-header h1 {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.create-btn {
+  background-color: #3498db;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.create-btn:hover {
+  background-color: #2980b9;
+}
+
+.message {
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.message.success {
+  background-color: #dff0d8;
+  color: #3c763d;
+}
+
+.message.error {
+  background-color: #f2dede;
+  color: #a94442;
+}
+
+/* --- Flex container for table and form --- */
+.venue-content {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+/* Make table and form same height and aligned */
+.venue-list,
+.venue-form {
+  flex: 1 1 45%;
+  min-width: 350px;
+}
+
+/* --- Table styles --- */
+.venue-list table {
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.venue-list th,
+.venue-list td {
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.venue-list th {
+  background-color: #2c3e50;
+  color: white;
+  font-weight: bold;
+}
+
+.venue-list tr:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+.venue-list tr:hover {
+  background-color: #e0f7fa;
+  transition: 0.3s;
+}
+
+/* --- Delete button --- */
+.delete-btn {
+  background-color: #e74c3c;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.delete-btn:hover {
+  background-color: #c0392b;
+}
+
+/* --- Form styles --- */
+.venue-form h2 {
+  margin-bottom: 20px;
+  font-weight: bold;
+}
+
+.venue-form input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 18px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.venue-form input:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+/* --- Form button --- */
+.venue-form .create-btn {
+  width: 100%;
+  text-align: center;
+}
+
+/* --- Responsive adjustments --- */
+@media screen and (max-width: 900px) {
+  .venue-content {
+    flex-direction: column;
+  }
+
+  .venue-list,
+  .venue-form {
+    flex: 1 1 100%;
+  }
+}
