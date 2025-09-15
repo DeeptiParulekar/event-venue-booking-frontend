@@ -37,58 +37,65 @@ const Venues = () => {
   };
 
   return (
-    <div className="venue-container">
-      <div className="venue-header">
-        <h1>Venue Management</h1>
-        <button
-          className="create-btn"
-          onClick={() => navigate("/create-venue")}
-        >
+    <div className="pmms-container">
+      <div className="pmms-header">
+        <h2>Venue Management</h2>
+        <button className="pmms-create-btn" onClick={() => navigate("/create-venue")}>
           + Create Venue
         </button>
       </div>
 
       {message && (
-        <div className={`message ${message.includes("Error") ? "error" : "success"}`}>
+        <div className={`pmms-message ${message.includes("Error") ? "error" : "success"}`}>
           {message}
         </div>
       )}
 
-      <div className="venue-content">
-        {/* Venue List Table */}
-        <div className="venue-list">
-          <h2>Existing Venues</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Capacity</th>
-                <th>Price/Day</th>
-                <th>Actions</th>
+      <div className="pmms-content">
+        <div className="pmms-search">
+          <input type="text" placeholder="Search by Name or Type" className="pmms-search-input" />
+        </div>
+
+        <table className="pmms-table">
+          <thead>
+            <tr>
+              <th>Venue Name</th>
+              <th>Type</th>
+              <th>Capacity</th>
+              <th>Price Per Day</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {venues.map((v) => (
+              <tr key={v.venueId}>
+                <td>{v.name}</td>
+                <td>{v.type}</td>
+                <td>{v.capacity}</td>
+                <td>₹ {v.pricePerDay}</td>
+                <td>
+                  <button className="pmms-action-btn edit" onClick={() => navigate(`/edit-venue/${v.venueId}`)}>
+                    ✏️
+                  </button>
+                  <button className="pmms-action-btn view" onClick={() => navigate(`/view-venue/${v.venueId}`)}>
+                    👁️
+                  </button>
+                  <button className="pmms-action-btn delete" onClick={() => handleDeleteVenue(v.venueId)}>
+                    🗑️
+                  </button>
+                </td>
               </tr>
-            </thead>
-            <tbody>
-              {venues.map((v) => (
-                <tr key={v.venueId}>
-                  <td>{v.venueId}</td>
-                  <td>{v.name}</td>
-                  <td>{v.type}</td>
-                  <td>{v.capacity}</td>
-                  <td>₹ {v.pricePerDay}</td>
-                  <td>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDeleteVenue(v.venueId)}
-                    >
-                      🗑️ Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+            ))}
+          </tbody>
+        </table>
+
+        <div className="pmms-pagination">
+          <span>Items per page: 5</span>
+          <button>⏪</button>
+          <button>◀</button>
+          <span>1 - {venues.length} of {venues.length}</span>
+          <button>▶</button>
+          <button>⏩</button>
         </div>
       </div>
     </div>
