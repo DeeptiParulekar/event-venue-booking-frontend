@@ -1,32 +1,30 @@
 import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
+import axios from "axios";
 
 const Dashboard = () => {
   const [metrics, setMetrics] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    fetch("http://localhost:8080/api/dashboard/metrics", {
-      method: "GET",
+  const token = localStorage.getItem("token");
+console.log(localStorage.getItem("token"));
+  // axios
+  //   .get("http://localhost:8080/api/dashboard/metrics",
+  axios.get("/api/dashboard/metrics", {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Failed to fetch dashboard metrics");
-        }
-        return res.json();
-      })
-      .then((data) => setMetrics(data))
-      .catch((err) => {
-        console.error("Error fetching metrics:", err);
-        setError("Unable to load dashboard data. Please try again.");
-      });
-  }, []);
+    .then((response) => {
+      setMetrics(response.data);
+    })
+    .catch((err) => {
+      console.error("Error fetching metrics:", err);
+      setError("Unable to load dashboard data. Please try again.");
+    });
+}, []);
 
   if (error) {
     return <div className="error-message">{error}</div>;

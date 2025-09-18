@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./LoginPage.css";
+import { jwtDecode } from "jwt-decode";
+
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -16,25 +18,60 @@ const LoginPage = () => {
   const navigate = useNavigate();
 
   // --------- LOGIN ----------
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.post("http://localhost:8080/api/auth/login", {
-        email,
-        password,
-      });
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const { data } = await axios.post("http://localhost:8080/api/auth/login", {
+  //       email,
+  //       password,
+  //     });
 
-      if (data.token) {
-        localStorage.setItem("token", data.token);
+  //     if (data.token) {
+  //       localStorage.setItem("token", data.token);
+        
+  //       navigate("/");
+  //     } else {
+  //       setError("Invalid Credentials");
+  //     }
+  //   } catch (err) {
+  //     setError("Invalid Credentials");
+  //   }
+  // };
+
+
+  const handleLogin = async (e) => {
+  e.preventDefault();
+  try {
+    const { data } = await axios.post("http://localhost:8080/api/auth/login", {
+      email,
+      password,
+    });
+
+    if (data.token) {
+      // store token
+      localStorage.setItem("token", data.token);
+
+      // decode token
+      const decoded = jwtDecode(data.token);
+
+      // authority field depends on how you put it in backend claims
+      const role = decoded.authorities || decoded.role || decoded.auth || null;
+      console.log("role", role)
+      // navigate based on role
+      if (role === "ADMIN") {
         navigate("/");
+      } else if (role === "USER") {
+        navigate("/venues");
       } else {
-        setError("Invalid Credentials");
+        navigate("/"); // default route
       }
-    } catch (err) {
+    } else {
       setError("Invalid Credentials");
     }
-  };
-
+  } catch (err) {
+    setError("Invalid Credentials");
+  }
+};
   // --------- REGISTER ----------
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -43,6 +80,7 @@ const LoginPage = () => {
         name,
         email,
         password,
+        role: "USER",
       });
       setMessage("Registration successful! Please login.");
       setIsRegisterMode(false);

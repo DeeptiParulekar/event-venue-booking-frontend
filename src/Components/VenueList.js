@@ -3,9 +3,10 @@ import { getAllVenues, deleteVenue } from "../api/venues";
 import { useNavigate } from "react-router-dom";
 import "./Venue.css";
 
-const Venues = () => {
+const VenueList = () => {
   const navigate = useNavigate();
   const [venues, setVenues] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
   const [message, setMessage] = useState("");
 
   const fetchVenues = () => {
@@ -53,7 +54,13 @@ const Venues = () => {
 
       <div className="pmms-content">
         <div className="pmms-search">
-          <input type="text" placeholder="Search by Name or Type" className="pmms-search-input" />
+          <input
+            type="text"
+            placeholder="Search by Name or Type"
+            className="pmms-search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
         </div>
 
         <table className="pmms-table">
@@ -63,30 +70,57 @@ const Venues = () => {
               <th>Type</th>
               <th>Capacity</th>
               <th>Price Per Day</th>
+              <th>Address</th>
+              <th>City</th>
+              <th>State</th>
+              <th>Pincode</th>
+              <th>Contact Person</th>
+              <th>Contact Number</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {venues.map((v) => (
-              <tr key={v.venueId}>
-                <td>{v.name}</td>
-                <td>{v.type}</td>
-                <td>{v.capacity}</td>
-                <td>₹ {v.pricePerDay}</td>
-                <td>
-                  <button className="pmms-action-btn edit" onClick={() => navigate(`/edit-venue/${v.venueId}`)}>
-                    ✏️
-                  </button>
-                  <button className="pmms-action-btn view" onClick={() => navigate(`/view-venue/${v.venueId}`)}>
-                    👁️
-                  </button>
-                  <button className="pmms-action-btn delete" onClick={() => handleDeleteVenue(v.venueId)}>
-                    🗑️
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {venues
+    .filter(
+      (v) =>
+        (v.venueName && v.venueName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (v.type && v.type.toLowerCase().includes(searchTerm.toLowerCase()))
+    )
+    .map((v) => (
+      <tr key={v.venueId}>
+        <td>{v.venueName}</td>
+        <td>{v.type}</td>
+        <td>{v.capacity}</td>
+        <td>₹ {v.pricePerDay}</td>
+        <td>{v.address}</td>
+        <td>{v.city}</td>
+        <td>{v.state}</td>
+        <td>{v.pincode}</td>
+        <td>{v.contactpersonName}</td>
+        <td>{v.contactpersonNumber}</td>
+        <td>
+          <button
+            className="pmms-action-btn edit"
+            onClick={() => navigate(`/edit-venue/${v.venueId}`)}
+          >
+            ✏️
+          </button>
+          <button
+            className="pmms-action-btn view"
+            onClick={() => navigate(`/view-venue/${v.venueId}`)}
+          >
+            👁️
+          </button>
+          <button
+            className="pmms-action-btn delete"
+            onClick={() => handleDeleteVenue(v.venueId)}
+          >
+            🗑️
+          </button>
+        </td>
+      </tr>
+    ))}
+</tbody>
         </table>
 
         <div className="pmms-pagination">
@@ -102,4 +136,4 @@ const Venues = () => {
   );
 };
 
-export default Venues;
+export default VenueList;

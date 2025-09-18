@@ -5,7 +5,6 @@
 }
 
 
-
 .main-content {
   margin-left: 240px; /* Same as sidebar width */
   padding: 20px;
@@ -17,6 +16,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  margin-top: 30px;
 }
 
 .pmms-create-btn {
@@ -83,6 +83,7 @@
 .pmms-table td {
   padding: 12px;
   border-bottom: 1px solid #dee2e6;
+   vertical-align: middle;
 }
 
 .pmms-table tr:last-child td {
@@ -108,9 +109,9 @@
 /* Action Buttons */
 .pmms-action-btn {
   border: none;
-  padding: 6px 10px;
+  padding: 7px 5px;
   margin-right: 5px;
-  border-radius: 5px;
+  border-radius: 29px;
   cursor: pointer;
 }
 
@@ -139,8 +140,10 @@
 
 /* Form Container */
 .pmms-form-container {
-  max-width: 900px;
+  max-width: 700px;
   margin: auto;
+  margin-top: 80px;
+  margin-bottom: 50px;
   background: white;
   padding: 30px;
   border-radius: 10px;
