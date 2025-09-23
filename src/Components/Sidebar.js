@@ -1,17 +1,3 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import "./Sidebar.css";   // import CSS file
-
-// export default function Sidebar() {
-//   return (
-//     <div className="sidebar">
-//       <Link to="/">Dashboard</Link>
-//       <Link to="/venues">Venues</Link>
-//     </div>
-//   );
-// }
-
-
 import React from "react";
 import { Link } from "react-router-dom";
 import { FaTachometerAlt, FaBuilding } from "react-icons/fa"; // icons
@@ -28,6 +14,11 @@ export default function Sidebar() {
       <Link to="/venues" className="sidebar-link">
         <FaBuilding className="sidebar-icon" />
         <span>Venues</span>
+      </Link>
+
+        <Link to="/booking" className="sidebar-link">
+        <FaBuilding className="sidebar-icon" />
+        <span>Booking</span>
       </Link>
     </div>
   );
