@@ -1,20 +1,35 @@
 // import React from "react";
 // import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+
 // import Navbar from "./Components/Navbar";
 // import Sidebar from "./Components/Sidebar";
 // import Dashboard from "./Components/Dashboard";
+// import UserDashboard from "./Components/UserDashboard";
 // import VenueList from "./Components/VenueList";
+// import CreateVenue from "./Components/CreateVenue";
+// import Booking from "./Components/Booking";
 // import LoginPage from "./Components/LoginPage";
 // import ResetPassword from "./Components/ResetPassword";
 // import Footer from "./Components/Footer";
-// import CreateVenue from "./Components/CreateVenue";
-// import Booking from "./Components/Booking";
+
+// import ProtectedRoute from "./Components/ProtectedRoute"; // ✅
+
 // import "./App.css";
 
 // function AppLayout() {
 //   const location = useLocation();
 //   const isAuthPage = location.pathname === "/login" || location.pathname === "/reset-password";
+
 //   const token = localStorage.getItem("token");
+//   let role = null;
+//   if (token) {
+//     try {
+//       const payload = JSON.parse(atob(token.split(".")[1]));
+//       role = payload.role;
+//     } catch (err) {
+//       console.error("Invalid token", err);
+//     }
+//   }
 
 //   const handleLogout = () => {
 //     localStorage.removeItem("token");
@@ -37,11 +52,19 @@
 //           {token && <Sidebar />}
 //           <div className="content">
 //             <Routes>
-//               <Route path="/" element={token ? <Dashboard /> : <Navigate to="/login" />} />
-//               <Route path="/venues" element={token ? <VenueList /> : <Navigate to="/login" />} />
-//               {/* ✅ Add CreateVenue route here */}
-//               <Route path="/create-venue" element={token ? <CreateVenue /> : <Navigate to="/login" />} />
-//               <Route path="*" element={<Navigate to="/" />} />
+//               <Route path="/" element={
+//                 <ProtectedRoute allowedRoles={["ADMIN"]}><Dashboard /></ProtectedRoute>
+//               } />
+
+//               <Route path="/user-dashboard" element={
+//                 <ProtectedRoute allowedRoles={["USER"]}><UserDashboard /></ProtectedRoute>
+//               } />
+
+//               <Route path="/venues" element={<ProtectedRoute><VenueList /></ProtectedRoute>} />
+//               <Route path="/create-venue" element={<ProtectedRoute><CreateVenue /></ProtectedRoute>} />
+//               <Route path="/booking" element={<ProtectedRoute><Booking /></ProtectedRoute>} />
+
+//               <Route path="*" element={<Navigate to={role === "USER" ? "/user-dashboard" : "/"} />} />
 //             </Routes>
 //           </div>
 //           <Footer />
@@ -60,25 +83,43 @@
 // }
 
 // export default App;
- 
+
+
+
 
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+
 import Navbar from "./Components/Navbar";
 import Sidebar from "./Components/Sidebar";
 import Dashboard from "./Components/Dashboard";
+import UserDashboard from "./Components/UserDashboard";
 import VenueList from "./Components/VenueList";
+import CreateVenue from "./Components/CreateVenue";
+import Booking from "./Components/Booking";
 import LoginPage from "./Components/LoginPage";
 import ResetPassword from "./Components/ResetPassword";
 import Footer from "./Components/Footer";
-import CreateVenue from "./Components/CreateVenue";
-import Booking from "./Components/Booking";  // ✅ Booking import
+import AdminBooking from "./Components/AdminBooking"; // <-- match file and component name
+
+import ProtectedRoute from "./Components/ProtectedRoute"; // ✅
+
 import "./App.css";
 
 function AppLayout() {
   const location = useLocation();
   const isAuthPage = location.pathname === "/login" || location.pathname === "/reset-password";
+
   const token = localStorage.getItem("token");
+  let role = null;
+  if (token) {
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      role = payload.role;
+    } catch (err) {
+      console.error("Invalid token", err);
+    }
+  }
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -101,11 +142,42 @@ function AppLayout() {
           {token && <Sidebar />}
           <div className="content">
             <Routes>
-              <Route path="/" element={token ? <Dashboard /> : <Navigate to="/login" />} />
-              <Route path="/venues" element={token ? <VenueList /> : <Navigate to="/login" />} />
-              <Route path="/create-venue" element={token ? <CreateVenue /> : <Navigate to="/login" />} />
-              <Route path="/booking" element={token ? <Booking /> : <Navigate to="/login" />} /> {/* ✅ Added Booking route */}
-              <Route path="*" element={<Navigate to="/" />} />
+              {/* Admin Dashboard */}
+              <Route
+                path="/"
+                element={
+                  <ProtectedRoute allowedRoles={["ADMIN"]}>
+                    <Dashboard />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* User Dashboard */}
+              <Route
+                path="/user-dashboard"
+                element={
+                  <ProtectedRoute allowedRoles={["USER"]}>
+                    <UserDashboard />
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Venues */}
+              <Route path="/venues" element={<ProtectedRoute><VenueList /></ProtectedRoute>} />
+              <Route path="/create-venue" element={<ProtectedRoute><CreateVenue /></ProtectedRoute>} />
+
+              {/* Booking route with admin/user switch */}
+              <Route
+                path="/booking"
+                element={
+                  <ProtectedRoute>
+                    {role === "ADMIN" ? <AdminBooking /> : <Booking />}
+                  </ProtectedRoute>
+                }
+              />
+
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to={role === "USER" ? "/user-dashboard" : "/"} />} />
             </Routes>
           </div>
           <Footer />
