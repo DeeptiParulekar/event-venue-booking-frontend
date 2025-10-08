@@ -1,195 +1,130 @@
-// import React, { useEffect, useState } from "react";
-// import axios from "axios";
-// import "./Dashboard.css"; // can reuse same CSS
-
-// const UserDashboard = () => {
-//   const [metrics, setMetrics] = useState(null);
-//   const [error, setError] = useState("");
-
-//   useEffect(() => {
-//     const token = localStorage.getItem("token");
-//     if (!token) {
-//       setError("Please login to view your dashboard");
-//       return;
-//     }
-
-//     axios
-//       .get("http://localhost:8080/api/dashboard/user-metrics", {
-//         headers: { Authorization: `Bearer ${token}` },
-//       })
-//       .then((res) => setMetrics(res.data))
-//       .catch((err) => {
-//         console.error("Error fetching user metrics:", err);
-//         setError("Unable to load dashboard data. Please try again.");
-//       });
-//   }, []);
-
-//   if (error) return <div className="error-message">{error}</div>;
-//   if (!metrics)
-//     return (
-//       <div className="loading">
-//         <div className="spinner"></div>
-//         <p>Loading Dashboard....</p>
-//       </div>
-//     );
-
-//   return (
-//     <div className="dashboard">
-//       <h1 className="dashboard-title">📊 My Dashboard</h1>
-
-//       <div className="cards">
-//         <div className="card">
-//           <h3>📅 My Bookings</h3>
-//           <p>{metrics.totalBookings}</p>
-//         </div>
-//         <div className="card">
-//           <h3>💰 My Revenue</h3>
-//           <p>₹{metrics.revenue}</p>
-//         </div>
-//         <div className="card">
-//           <h3>⏳ Upcoming Bookings</h3>
-//           <p>{metrics.upcomingBookings}</p>
-//         </div>
-//       </div>
-
-//       <h2 className="section-title">📅 Recent Bookings</h2>
-//       <div className="table-container">
-//         <table className="modern-table">
-//           <thead>
-//             <tr>
-//               <th>ID</th>
-//               <th>Venue</th>
-//               <th>Date</th>
-//               <th>Status</th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {metrics.recentBookings && metrics.recentBookings.length > 0 ? (
-//               metrics.recentBookings.map((b) => (
-//                 <tr key={b.bookingId}>
-//                   <td>{b.bookingId}</td>
-//                   <td>{b.venueName}</td>
-//                   <td>{b.bookingDate}</td>
-//                   <td>
-//                     <span className={`status-badge ${b.status.toLowerCase()}`}>
-//                       {b.status}
-//                     </span>
-//                   </td>
-//                 </tr>
-//               ))
-//             ) : (
-//               <tr>
-//                 <td colSpan="4">No recent bookings</td>
-//               </tr>
-//             )}
-//           </tbody>
-//         </table>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default UserDashboard;
-
-
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./Dashboard.css"; // can reuse same CSS
+import "./UserDashboard.css";
+import { FaBuilding, FaCalendarCheck, FaClock, FaRupeeSign } from "react-icons/fa";
+import CountUp from "react-countup";
+import { Sparklines, SparklinesLine } from "react-sparklines";
 
 const UserDashboard = () => {
-  const [metrics, setMetrics] = useState(null);
+  const [metrics, setMetrics] = useState({
+    totalVenues: 0,
+    totalBookings: 0,
+    upcomingBookings: 0,
+    revenue: 0,
+  });
+  const [recentBookings, setRecentBookings] = useState([]);
   const [error, setError] = useState("");
+
+  // Sample trend data for mini charts
+  const trends = {
+    totalVenues: [2, 3, 5, 4, 6, 7, metrics.totalVenues],
+    totalBookings: [1, 2, 4, 3, 5, 4, metrics.totalBookings],
+    upcomingBookings: [0, 1, 1, 2, 2, 3, metrics.upcomingBookings],
+    revenue: [1000, 2000, 1500, 3000, 2500, 4000, metrics.revenue],
+  };
 
   useEffect(() => {
     const token = localStorage.getItem("token");
 
-    // ✅ If no token, redirect to login immediately
-    if (!token) {
-      window.location.href = "/login";
-      return;
-    }
+    const fetchMetrics = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8080/api/dashboard/metrics",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        setMetrics({
+          totalVenues: response.data.totalVenues,
+          totalBookings: response.data.totalBookings,
+          upcomingBookings: response.data.upcomingBookings,
+          revenue: response.data.revenue,
+        });
+        setRecentBookings(response.data.recentBookings);
+      } catch (err) {
+        console.error(err);
+        setError("Failed to fetch dashboard data.");
+      }
+    };
 
-    axios
-      .get("http://localhost:8080/api/dashboard/user-metrics", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => setMetrics(res.data))
-      .catch((err) => {
-        console.error("Error fetching user metrics:", err);
-
-        // ✅ If token is invalid/expired, remove token and redirect
-        if (err.response && err.response.status === 401) {
-          localStorage.removeItem("token");
-          window.location.href = "/login";
-        } else {
-          setError("Unable to load dashboard data. Please try again.");
-        }
-      });
+    fetchMetrics();
   }, []);
 
-  if (error)
-    return <div className="error-message">{error}</div>;
-
-  if (!metrics)
-    return (
-      <div className="loading">
-        <div className="spinner"></div>
-        <p>Loading Dashboard....</p>
-      </div>
-    );
-
   return (
-    <div className="dashboard">
-      <h1 className="dashboard-title">📊 My Dashboard</h1>
+    <div className="dashboard-container">
+      <h1>User Dashboard</h1>
+      {error && <p className="error">{error}</p>}
 
-      <div className="cards">
-        <div className="card">
-          <h3>📅 My Bookings</h3>
-          <p>{metrics.totalBookings}</p>
+      {/* Metrics Cards */}
+      <div className="metrics">
+        <div className="metric-card">
+          <FaBuilding size={30} className="metric-icon" />
+          <h3>Total Venues</h3>
+          <p><CountUp end={metrics.totalVenues} duration={1.5} /></p>
+          <Sparklines data={trends.totalVenues} width={100} height={30}>
+            <SparklinesLine color="#2980b9" />
+          </Sparklines>
         </div>
-        <div className="card">
-          <h3>💰 My Revenue</h3>
-          <p>₹{metrics.revenue}</p>
+
+        <div className="metric-card">
+          <FaCalendarCheck size={30} className="metric-icon" />
+          <h3>Total Bookings</h3>
+          <p><CountUp end={metrics.totalBookings} duration={1.5} /></p>
+          <Sparklines data={trends.totalBookings} width={100} height={30}>
+            <SparklinesLine color="#27ae60" />
+          </Sparklines>
         </div>
-        <div className="card">
-          <h3>⏳ Upcoming Bookings</h3>
-          <p>{metrics.upcomingBookings}</p>
+
+        <div className="metric-card">
+          <FaClock size={30} className="metric-icon" />
+          <h3>Upcoming Bookings</h3>
+          <p><CountUp end={metrics.upcomingBookings} duration={1.5} /></p>
+          <Sparklines data={trends.upcomingBookings} width={100} height={30}>
+            <SparklinesLine color="#f39c12" />
+          </Sparklines>
+        </div>
+
+        <div className="metric-card">
+          <FaRupeeSign size={30} className="metric-icon" />
+          <h3>Total Revenue</h3>
+          <p>₹ <CountUp end={metrics.revenue} duration={1.5} separator="," /></p>
+          <Sparklines data={trends.revenue} width={100} height={30}>
+            <SparklinesLine color="#8e44ad" />
+          </Sparklines>
         </div>
       </div>
 
-      <h2 className="section-title">📅 Recent Bookings</h2>
-      <div className="table-container">
-        <table className="modern-table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Venue</th>
-              <th>Date</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {metrics.recentBookings && metrics.recentBookings.length > 0 ? (
-              metrics.recentBookings.map((b) => (
-                <tr key={b.bookingId}>
-                  <td>{b.bookingId}</td>
-                  <td>{b.venueName}</td>
-                  <td>{b.bookingDate}</td>
+      {/* Recent Bookings Table */}
+      <div className="recent-bookings">
+        <h2>Recent Bookings</h2>
+        {recentBookings.length === 0 ? (
+          <p>No recent bookings available.</p>
+        ) : (
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>User</th>
+                <th>Venue</th>
+                <th>Date</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recentBookings.map((booking, index) => (
+                <tr key={booking.bookingId}>
+                  <td>{index + 1}</td>
+                  <td>{booking.userName}</td>
+                  <td>{booking.venueName}</td>
+                  <td>{new Date(booking.bookingDate).toLocaleDateString()}</td>
                   <td>
-                    <span className={`status-badge ${b.status.toLowerCase()}`}>
-                      {b.status}
+                    <span className={`status-badge ${booking.status.toLowerCase()}`}>
+                      {booking.status}
                     </span>
                   </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="4">No recent bookings</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
