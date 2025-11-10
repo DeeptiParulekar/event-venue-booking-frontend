@@ -1,0 +1,130 @@
+/* Floating button (like Ask Tender AI) */
+.ai-float-button {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  align-items: center;
+  background: #fff;
+  color: #333;
+  border-radius: 30px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  padding: 8px 14px;
+  cursor: pointer;
+  font-weight: 500;
+  font-family: "Inter", sans-serif;
+  z-index: 10000;
+  transition: all 0.3s ease;
+}
+
+.ai-float-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.25);
+}
+
+.ai-float-icon {
+  background: linear-gradient(135deg, #4a00e0, #8e2de2);
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-right: 10px;
+}
+
+.ai-float-text {
+  font-size: 14px;
+}
+
+/* Chat container styling */
+.ai-chat-container {
+  position: fixed;
+  bottom: 90px;
+  right: 24px;
+  width: 320px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 10001;
+  animation: slideUp 0.3s ease;
+}
+
+/* Header */
+.ai-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(135deg, #4a00e0, #8e2de2);
+  color: white;
+  padding: 10px 14px;
+  font-weight: 500;
+}
+
+.ai-close-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.ai-chat-body {
+  padding: 10px;
+  height: 280px;
+  overflow-y: auto;
+}
+
+.ai-message {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  max-width: 80%;
+  line-height: 1.4;
+}
+
+.ai-user-msg {
+  background: #e0e0ff;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.ai-bot-msg {
+  background: #f3f3f3;
+  align-self: flex-start;
+}
+
+.ai-chat-input {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #eee;
+}
+
+.ai-chat-input input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 8px;
+}
+
+.ai-chat-input button {
+  background: transparent;
+  border: none;
+  color: #6c63ff;
+  cursor: pointer;
+}
+
+/* Animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
