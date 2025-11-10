@@ -261,20 +261,21 @@ const UserDashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {venues.map((venue, index) => (
-                  <tr key={venue.id || index}>
-                    <td>{venue.name}</td>
-                    <td>{venue.type}</td>
-                    <td>{venue.capacity}</td>
-                    <td>₹{venue.pricePerDay}</td>
-                    <td>{venue.address}</td>
-                    <td>{venue.city}</td>
-                    <td>{venue.state}</td>
-                    <td>{venue.pincode}</td>
-                    <td>{venue.contactPerson || "-"}</td>
-                    <td>{venue.contactNumber || "-"}</td>
-                  </tr>
-                ))}
+              {venues.map((venue, index) => (
+  <tr key={venue.venueId || index}>
+    <td>{venue.venueName}</td>
+    <td>{venue.type}</td>
+    <td>{venue.capacity}</td>
+    <td>₹{venue.pricePerDay}</td>
+    <td>{venue.address}</td>
+    <td>{venue.city}</td>
+    <td>{venue.state}</td>
+    <td>{venue.pincode}</td>
+    <td>{venue.contactpersonName || "-"}</td>
+    <td>{venue.contactpersonNumber || "-"}</td>
+  </tr>
+))}
+
               </tbody>
             </table>
           )}
